@@ -26,7 +26,7 @@ defmodule Day1 do
 
   defp add_elf_calories(entries) do
     String.split(entries)
-      |> Enum.map(fn x -> String.to_integer(x) end)
+      |> Enum.map(&String.to_integer/1)
       |> Enum.sum
   end
 end
