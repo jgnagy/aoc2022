@@ -90,7 +90,7 @@ class Forest
       end
   end
 
-  def highest_viewing_distance() = trees.max_by(&:viewing_distance_score).viewing_distance_score
+  def highest_viewing_distance() = trees.map(&:viewing_distance_score).max
 end
 
 @raw_file = File.read(FILENAME).split("\n")
