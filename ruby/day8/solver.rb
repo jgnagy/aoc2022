@@ -38,57 +38,23 @@ class Tree
     @eastern_neighbors ||= in_same_row.select { |t| t.x > x }.sort_by(&:x)
   end
 
-  def north_viewing_distance
-    @north_viewing_distance ||=
-      lambda do
-        positive_viewing_distance = 0
-        northern_neighbors.each do |t|
-          positive_viewing_distance += 1
-          break unless t.height < height
-        end
-        positive_viewing_distance
-      end.call
-  end
-
-  def south_viewing_distance
-    @south_viewing_distance ||=
-      lambda do
-        negative_viewing_distance = 0
-        southern_neighbors.each do |t|
-          negative_viewing_distance += 1
-          break unless t.height < height
-        end
-        negative_viewing_distance
-      end.call
-  end
-
-  def west_viewing_distance
-    @west_viewing_distance ||=
-      lambda do
-        negative_viewing_distance = 0
-        western_neighbors.each do |t|
-          negative_viewing_distance += 1
-          break unless t.height < height
-        end
-        negative_viewing_distance
-      end.call
-  end
-
-  def east_viewing_distance
-    @east_viewing_distance ||=
-      lambda do
-        positive_viewing_distance = 0
-        eastern_neighbors.each do |t|
-          positive_viewing_distance += 1
-          break unless t.height < height
-        end
-        positive_viewing_distance
-      end.call
+  def viewing_distance_for(neighbors)
+    viewing_distance = 0
+    neighbors.each do |t|
+      viewing_distance += 1
+      break unless t.height < height
+    end
+    viewing_distance
   end
 
   def viewing_distance_score
     @viewing_distance_score ||=
-      north_viewing_distance * south_viewing_distance * west_viewing_distance * east_viewing_distance
+      [
+        viewing_distance_for(northern_neighbors),
+        viewing_distance_for(southern_neighbors),
+        viewing_distance_for(western_neighbors),
+        viewing_distance_for(eastern_neighbors)
+      ].reduce(&:*)
   end
 end
 
