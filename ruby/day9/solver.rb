@@ -59,8 +59,6 @@ class Knot
     @visited_positions = [[0, 0]]
   end
 
-  def head?() = @head.present?
-  def tail?() = rope.knots.last.id == id
   def position() = [x, y]
 end
 
