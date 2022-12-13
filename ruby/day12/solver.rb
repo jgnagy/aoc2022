@@ -7,6 +7,7 @@ FILENAME = "input.txt"
 class Terrain
   attr_accessor :peaks
 
+  def attempted_paths_cache() = @attempted_paths_cache ||= {}
   def initialize() = @peaks = []
 end
 
@@ -41,8 +42,7 @@ class Peak
 
   def nearby_reachable_peaks
     @nearby_reachable_peaks ||= terrain.peaks.select do |p|
-      (-2..1).include?(p.elevation - elevation) &&
-        ((x == p.x && [y - 1, y + 1].include?(p.y)) || (y == p.y && [x - 1, x + 1].include?(p.x)))
+      (x == p.x && [y - 1, y + 1].include?(p.y)) || (y == p.y && [x - 1, x + 1].include?(p.x))
     end
   end
 
@@ -54,53 +54,19 @@ end
 class Climb
   include Connected::Edge
 
-  attr_reader :from, :to, :state
+  attr_reader :from, :to
 
   def initialize(from, to)
     @from = from
     @to = to
-    @state = :open
+  end
+
+  def state
+    (-2..1).include?(to.elevation - from.elevation) ? :open : :closed
   end
 end
 
-ATTEMPTED_DESTINATIONS = Hash.new([])
-
 class Path < Connected::Path
-  def self.all(from:, to:)
-    paths = []
-
-    path_queue = from.neighbors.map { |n| new([from, n]) }
-
-    until path_queue.empty?
-      this_path = path_queue.pop
-      next unless this_path.open?
-
-      if ATTEMPTED_DESTINATIONS[this_path.to.name][0]&.<= this_path.hops
-        next if ATTEMPTED_DESTINATIONS[this_path.to.name][0] < this_path.hops
-        next if ATTEMPTED_DESTINATIONS[this_path.to.name][1] >= 3
-
-        ATTEMPTED_DESTINATIONS[this_path.to.name][1] += 1
-      else
-        ATTEMPTED_DESTINATIONS[this_path.to.name] = [this_path.hops, 1]
-      end
-
-      if this_path.to == to
-        paths << this_path
-      else
-        highhops = paths.max_by(&:hops)&.hops
-
-        this_path.to.neighbors.each do |n|
-          new_path = this_path.branch(n)
-          next unless new_path
-          next unless paths.empty? || new_path.hops <= highhops
-
-          path_queue.unshift(new_path)
-        end
-      end
-    end
-
-    paths.sort_by(&:hops)
-  end
 end
 
 @raw_file = File.read(FILENAME).split("\n")
@@ -120,11 +86,15 @@ end
 
 @start = @terrain.peaks.find(&:start?)
 @destination = @terrain.peaks.find(&:destination?)
-@solution = Path.all(from: @start, to: @destination).first
+@solution = Path.all(
+  from: @start, to: @destination, cache: @terrain.attempted_paths_cache, min_by: :hops
+).first
 puts "Part 1: #{@solution.hops}"
 
 @new_start_options = @terrain.peaks.select do |p|
   p.elevation.zero? && p.nearby_reachable_peaks.any? { |o| o.elevation == 1 }
 end
-@solutions = @new_start_options.map { |s| Path.all(from: s, to: @destination).first }
+@solutions = @new_start_options.map do |s|
+  Path.all(from: s, to: @destination, cache: @terrain.attempted_paths_cache, min_by: :hops).first
+end
 puts "Part 2: #{@solutions.compact.map(&:hops).min}"
