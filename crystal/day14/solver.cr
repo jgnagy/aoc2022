@@ -13,6 +13,15 @@ class Grid
     @lowest_rock_y = 0
   end
 
+  def fill_with_sand!
+    grain_of_sand = Grain.generate(self)
+    until grain_of_sand.nil?
+      grain_of_sand = grain_of_sand.drop!
+      grain_of_sand = Grain.generate(self) if grain_of_sand
+    end
+    self
+  end
+
   def import_from(file)
     File.each_line(file) do |line|
       imported_points = Rock.from_line(line, self)
@@ -179,22 +188,12 @@ end
 
 grid = Grid.new
 grid.import_from(FILENAME)
-
-grain_of_sand = Grain.generate(grid)
-until grain_of_sand.nil?
-  grain_of_sand = grain_of_sand.drop!
-  grain_of_sand = Grain.generate(grid) if grain_of_sand
-end
+grid.fill_with_sand!
 
 puts "Part 1: #{grid.resting_grains.size}"
 
 grid = Grid.new(has_floor: true)
 grid.import_from(FILENAME)
-
-grain_of_sand = Grain.generate(grid)
-until grain_of_sand.nil?
-  grain_of_sand = grain_of_sand.drop!
-  grain_of_sand = Grain.generate(grid) if grain_of_sand
-end
+grid.fill_with_sand!
 
 puts "Part 2: #{grid.resting_grains.size}"
