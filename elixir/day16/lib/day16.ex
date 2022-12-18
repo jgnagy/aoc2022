@@ -61,7 +61,7 @@ defmodule Day16 do
       |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
       |> Enum.map(fn {s, lst} -> {s, Enum.max(lst)} end)
       |> each_pair
-      |> find_and_combine_path_pair
+      |> find_and_combine_disjoin_path_pair
 
     cond do
       Enum.empty?(solutions) && !multi ->
@@ -86,7 +86,7 @@ defmodule Day16 do
     end
   end
 
-  defp find_and_combine_path_pair(list) do
+  defp find_and_combine_disjoin_path_pair(list) do
     list
       |> Stream.filter(
           fn {{h_path, _}, {el_path, _}} ->
