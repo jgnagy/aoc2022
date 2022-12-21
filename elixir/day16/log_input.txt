@@ -1,0 +1,101 @@
+Compiling 1 file (.ex)
+.....>> Remaining minutes: 1
+>> Expected Total Runtime: 26
+>> Path Max Runtime: 12
+>> Current Valve and Output:
+{:EE, 3}
+>> Current Results (res):
+{[:EE, :HH, :DD], 313}
+>> Expected distance to next hop (BB): 3
+>> Amount we'll add: 540
+>> Remaining minutes: 1
+>> Expected Total Runtime: 26
+>> Path Max Runtime: 12
+>> Current Valve and Output:
+{:EE, 3}
+>> Current Results (res):
+{[:EE, :HH, :DD], 313}
+>> Expected distance to next hop (CC): 2
+>> Amount we'll add: 585
+>> Remaining minutes: 1
+>> Expected Total Runtime: 26
+>> Path Max Runtime: 12
+>> Current Valve and Output:
+{:EE, 3}
+>> Current Results (res):
+{[:EE, :HH, :DD], 313}
+>> Expected distance to next hop (JJ): 4
+>> Amount we'll add: 495
+>> Remaining minutes: 2
+>> Expected Total Runtime: 26
+>> Path Max Runtime: 13
+>> Current Valve and Output:
+{:EE, 3}
+>> Current Results (res):
+{[:EE, :HH, :DD], 358}
+>> Expected distance to next hop (BB): 3
+>> Amount we'll add: 540
+>> Remaining minutes: 2
+>> Expected Total Runtime: 26
+>> Path Max Runtime: 13
+>> Current Valve and Output:
+{:EE, 3}
+>> Current Results (res):
+{[:EE, :HH, :DD], 358}
+>> Expected distance to next hop (CC): 2
+>> Amount we'll add: 585
+>> Remaining minutes: 2
+>> Expected Total Runtime: 26
+>> Path Max Runtime: 13
+>> Current Valve and Output:
+{:EE, 3}
+>> Current Results (res):
+{[:EE, :HH, :DD], 358}
+>> Expected distance to next hop (JJ): 4
+>> Amount we'll add: 495
+>> Remaining minutes: 3
+>> Expected Total Runtime: 26
+>> Path Max Runtime: 14
+>> Current Valve and Output:
+{:EE, 3}
+>> Current Results (res):
+{[:EE, :HH, :DD], 403}
+>> Expected distance to next hop (BB): 3
+>> Amount we'll add: 540
+>> Remaining minutes: 3
+>> Expected Total Runtime: 26
+>> Path Max Runtime: 14
+>> Current Valve and Output:
+{:EE, 3}
+>> Current Results (res):
+{[:EE, :HH, :DD], 403}
+>> Expected distance to next hop (JJ): 4
+>> Amount we'll add: 495
+>> Remaining minutes: 4
+>> Expected Total Runtime: 26
+>> Path Max Runtime: 15
+>> Current Valve and Output:
+{:EE, 3}
+>> Current Results (res):
+{[:EE, :HH, :DD], 448}
+>> Expected distance to next hop (JJ): 4
+>> Amount we'll add: 495
+
+
+  1) doctest Day16.solve_part2/1 (2) (Day16Test)
+     test/day16_test.exs:3
+     Doctest failed
+     doctest:
+       iex> Day16.solve_part2(File.read!("test_input.txt"))
+       1707
+     code:  Day16.solve_part2(File.read!("test_input.txt")) === 1707
+     left:  {[{MapSet.new([:BB, :CC, :JJ]), 764}, {MapSet.new([:DD, :EE, :HH]), 943}], 1707}
+     right: 1707
+     stacktrace:
+       lib/day16_mine.ex:31: Day16 (module)
+
+
+Finished in 0.03 seconds (0.00s async, 0.03s sync)
+6 doctests, 1 failure
+
+Randomized with seed 822121
